@@ -16,8 +16,9 @@ export function AutosaveStatus({ endpoint, formId }: AutosaveStatusProps) {
   const pendingRef = useRef(false)
 
   useEffect(() => {
-    const form = document.getElementById(formId) as HTMLFormElement | null
-    if (!form) return
+    const formElement = document.getElementById(formId)
+    if (!(formElement instanceof HTMLFormElement)) return
+    const form = formElement
 
     async function saveNow() {
       if (savingRef.current) {
