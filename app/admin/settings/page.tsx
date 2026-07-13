@@ -23,6 +23,21 @@ export default async function AdminSettingsPage() {
     return <main className="text-white">No hay configuración del evento.</main>
   }
 
+  const configDefaults = {
+    eventName: config.eventName,
+    coupleNames: config.coupleNames,
+    date: config.date,
+    startTime: config.startTime,
+    venueName: config.venueName,
+    city: config.city,
+    address: config.address,
+    googleMapsUrl: config.googleMapsUrl,
+    appleMapsUrl: config.appleMapsUrl || '',
+    wazeUrl: config.wazeUrl || '',
+    contactInfo: config.contactInfo,
+    dressCode: config.dressCode || ''
+  }
+
   async function save(formData: FormData) {
     'use server'
 
@@ -38,18 +53,18 @@ export default async function AdminSettingsPage() {
     await prisma.eventConfig.update({
       where: { id: currentConfig.id },
       data: {
-        eventName: String(formData.get('eventName') || config.eventName),
-        coupleNames: String(formData.get('coupleNames') || config.coupleNames),
-        date: String(formData.get('date') || config.date),
-        startTime: String(formData.get('startTime') || config.startTime),
-        venueName: String(formData.get('venueName') || config.venueName),
-        city: String(formData.get('city') || config.city),
-        address: String(formData.get('address') || config.address),
-        googleMapsUrl: String(formData.get('googleMapsUrl') || config.googleMapsUrl),
-        appleMapsUrl: String(formData.get('appleMapsUrl') || config.appleMapsUrl || ''),
-        wazeUrl: String(formData.get('wazeUrl') || config.wazeUrl || ''),
-        contactInfo: String(formData.get('contactInfo') || config.contactInfo),
-        dressCode: String(formData.get('dressCode') || config.dressCode || '')
+        eventName: String(formData.get('eventName') || configDefaults.eventName),
+        coupleNames: String(formData.get('coupleNames') || configDefaults.coupleNames),
+        date: String(formData.get('date') || configDefaults.date),
+        startTime: String(formData.get('startTime') || configDefaults.startTime),
+        venueName: String(formData.get('venueName') || configDefaults.venueName),
+        city: String(formData.get('city') || configDefaults.city),
+        address: String(formData.get('address') || configDefaults.address),
+        googleMapsUrl: String(formData.get('googleMapsUrl') || configDefaults.googleMapsUrl),
+        appleMapsUrl: String(formData.get('appleMapsUrl') || configDefaults.appleMapsUrl),
+        wazeUrl: String(formData.get('wazeUrl') || configDefaults.wazeUrl),
+        contactInfo: String(formData.get('contactInfo') || configDefaults.contactInfo),
+        dressCode: String(formData.get('dressCode') || configDefaults.dressCode)
       }
     })
   }
