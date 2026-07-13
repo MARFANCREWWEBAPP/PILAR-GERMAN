@@ -15,5 +15,21 @@ export async function getEventConfig() {
 }
 
 export async function getBusRoutes() {
-  return withDatabaseFallback(() => prisma.busRoute.findMany({ orderBy: [{ type: 'asc' }, { departureTime: 'asc' }] }), demoBusRoutes)
+  return withDatabaseFallback(
+    () =>
+      prisma.busRoute.findMany({
+        select: {
+          id: true,
+          type: true,
+          title: true,
+          pointName: true,
+          address: true,
+          mapsUrl: true,
+          departureTime: true,
+          notes: true
+        },
+        orderBy: [{ type: 'asc' }, { departureTime: 'asc' }]
+      }),
+    demoBusRoutes
+  )
 }
