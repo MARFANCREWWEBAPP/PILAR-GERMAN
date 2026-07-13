@@ -20,6 +20,13 @@ export default async function TicketPage({ params }: { params: { token: string }
   if (!ticket) notFound()
 
   const event = await getEventConfig()
+  const eventDefaults = {
+    date: event?.date || '06.12.2026',
+    startTime: event?.startTime || '17:30',
+    venueName: event?.venueName || 'FINCA SAN ISIDRO',
+    city: event?.city || 'ARDALES',
+    googleMapsUrl: event?.googleMapsUrl || 'https://share.google/gpKNBvCS03JEzRHFP'
+  }
   const guestName = `${ticket.guest.firstName} ${ticket.guest.lastName}`
   const passportCode = `NSWC-0612-${ticket.token.slice(0, 8).toUpperCase()}`
   const statusLabel = ticket.status === 'ACTIVE' ? 'VALID ACCESS' : ticket.status
@@ -95,12 +102,12 @@ export default async function TicketPage({ params }: { params: { token: string }
                   <div className="motion-tilt rounded-[1.6rem] border border-white/[0.10] bg-white/[0.055] p-4">
                     <CalendarDays size={18} className="text-[#f5f5f5]" />
                     <p className="mt-4 text-[10px] font-black uppercase tracking-[0.24em] text-white/[0.42]">Date / time</p>
-                    <p className="mt-1 text-sm font-bold text-white">{event.date} · {event.startTime}</p>
+                    <p className="mt-1 text-sm font-bold text-white">{eventDefaults.date} · {eventDefaults.startTime}</p>
                   </div>
                   <div className="motion-tilt rounded-[1.6rem] border border-white/[0.10] bg-white/[0.055] p-4">
                     <MapPin size={18} className="text-[#f5f5f5]" />
                     <p className="mt-4 text-[10px] font-black uppercase tracking-[0.24em] text-white/[0.42]">Location</p>
-                    <p className="mt-1 text-sm font-bold text-white">{event.venueName}, {event.city}</p>
+                    <p className="mt-1 text-sm font-bold text-white">{eventDefaults.venueName}, {eventDefaults.city}</p>
                   </div>
                   <div className="motion-tilt rounded-[1.6rem] border border-white/[0.10] bg-white/[0.055] p-4">
                     <Ticket size={18} className="text-[#f5f5f5]" />
@@ -184,7 +191,7 @@ export default async function TicketPage({ params }: { params: { token: string }
           <Link href="/buses" className="inline-flex h-[3.25rem] items-center justify-center rounded-full border border-white/[0.18] bg-white/[0.06] px-4 py-4 text-sm font-black uppercase tracking-[0.14em] text-white transition hover:border-[#f5f5f5]/[0.44]">
             Shuttles
           </Link>
-          <a href={event.googleMapsUrl} target="_blank" className="inline-flex h-[3.25rem] items-center justify-center gap-2 rounded-full border border-white/[0.18] bg-white/[0.06] px-4 py-4 text-sm font-black uppercase tracking-[0.14em] text-white transition hover:border-[#f5f5f5]/[0.44]">
+          <a href={eventDefaults.googleMapsUrl} target="_blank" className="inline-flex h-[3.25rem] items-center justify-center gap-2 rounded-full border border-white/[0.18] bg-white/[0.06] px-4 py-4 text-sm font-black uppercase tracking-[0.14em] text-white transition hover:border-[#f5f5f5]/[0.44]">
             Map
             <ArrowUpRight size={15} />
           </a>
