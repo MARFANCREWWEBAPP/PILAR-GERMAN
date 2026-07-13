@@ -42,6 +42,7 @@ export default function RsvpPage() {
   useEffect(() => {
     const form = document.getElementById('rsvp-form') as HTMLFormElement | null
     if (!form) return
+    const formElement = form
 
     function restoreDraft() {
       const saved = window.localStorage.getItem(RSVP_DRAFT_KEY)
@@ -50,7 +51,6 @@ export default function RsvpPage() {
       try {
         const draft = JSON.parse(saved) as Record<string, string>
         if (draft.companion === 'YES') setHasCompanion(true)
-        const formElement = form
 
         window.setTimeout(() => {
           Object.entries(draft).forEach(([name, value]) => {
@@ -67,7 +67,7 @@ export default function RsvpPage() {
     function saveDraft() {
       if (timer) window.clearTimeout(timer)
       timer = window.setTimeout(() => {
-        const formData = new FormData(form)
+        const formData = new FormData(formElement)
         const draft: Record<string, string> = {}
         formData.forEach((value, key) => {
           if (typeof value === 'string') draft[key] = value
@@ -77,13 +77,13 @@ export default function RsvpPage() {
     }
 
     restoreDraft()
-    form.addEventListener('input', saveDraft)
-    form.addEventListener('change', saveDraft)
+    formElement.addEventListener('input', saveDraft)
+    formElement.addEventListener('change', saveDraft)
 
     return () => {
       if (timer) window.clearTimeout(timer)
-      form.removeEventListener('input', saveDraft)
-      form.removeEventListener('change', saveDraft)
+      formElement.removeEventListener('input', saveDraft)
+      formElement.removeEventListener('change', saveDraft)
     }
   }, [])
 
