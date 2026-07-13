@@ -50,10 +50,11 @@ export default function RsvpPage() {
       try {
         const draft = JSON.parse(saved) as Record<string, string>
         if (draft.companion === 'YES') setHasCompanion(true)
+        const formElement = form
 
         window.setTimeout(() => {
           Object.entries(draft).forEach(([name, value]) => {
-            const field = form.elements.namedItem(name) as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement | null
+            const field = formElement.elements.namedItem(name) as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement | null
             if (field) field.value = value
           })
         }, 0)
