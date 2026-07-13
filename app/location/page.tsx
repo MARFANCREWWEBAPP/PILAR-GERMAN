@@ -14,6 +14,14 @@ const accessCards = [
 
 export default async function LocationPage() {
   const event = await getEventConfig()
+  const eventDefaults = {
+    venueName: event?.venueName || 'FINCA SAN ISIDRO',
+    address: event?.address || 'Finca San Isidro, Ardales, Málaga',
+    city: event?.city || 'ARDALES',
+    googleMapsUrl: event?.googleMapsUrl || 'https://share.google/gpKNBvCS03JEzRHFP',
+    appleMapsUrl: event?.appleMapsUrl || '',
+    wazeUrl: event?.wazeUrl || ''
+  }
 
   return (
     <main className="brand-stage relative min-h-screen overflow-hidden bg-[#020302] px-4 py-5 text-white md:px-8">
@@ -38,8 +46,8 @@ export default async function LocationPage() {
               </div>
               <p className="mt-8 inline-flex items-center gap-2 text-xs font-black uppercase tracking-[0.32em] text-[#f5f5f5]"><Sparkles size={14} /> Venue map</p>
               <h1 className="mt-3 max-w-5xl font-display text-[clamp(5rem,11vw,10.5rem)] leading-[0.70] tracking-[-0.09em] text-white">Find the field</h1>
-              <p className="mt-7 font-display text-6xl leading-[0.82] tracking-[-0.04em] text-[#f7f7f2]">{event.venueName}</p>
-              <p className="mt-4 max-w-2xl text-base leading-8 text-white/[0.62]">{event.address}</p>
+              <p className="mt-7 font-display text-6xl leading-[0.82] tracking-[-0.04em] text-[#f7f7f2]">{eventDefaults.venueName}</p>
+              <p className="mt-4 max-w-2xl text-base leading-8 text-white/[0.62]">{eventDefaults.address}</p>
             </div>
           </div>
 
@@ -47,7 +55,7 @@ export default async function LocationPage() {
             <div className="absolute -right-24 -top-24 h-56 w-56 rounded-full bg-[#1a1a1a]/[0.26] blur-3xl" />
             <div className="relative">
               <p className="text-xs font-black uppercase tracking-[0.30em] text-[#111111]">City access</p>
-              <p className="mt-3 font-display text-6xl leading-[0.78] tracking-[-0.05em]">{event.city}</p>
+              <p className="mt-3 font-display text-6xl leading-[0.78] tracking-[-0.05em]">{eventDefaults.city}</p>
               <div className="motion-scan mt-7 rounded-[2rem] border border-black/[0.10] bg-white p-5 shadow-[0_24px_80px_rgba(0,0,0,0.14)]">
                 <MapPin size={42} className="text-[#111111]" />
                 <p className="mt-5 text-sm leading-6 text-black/[0.62]">Abre tu app de mapas favorita y guarda la ruta antes de salir.</p>
@@ -69,7 +77,7 @@ export default async function LocationPage() {
         </section>
 
         <section className="mt-5 grid gap-2 sm:grid-cols-4">
-          <a className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-[#f7f7f2] px-5 text-sm font-black uppercase tracking-[0.14em] text-black transition hover:bg-[#f5f5f5]" href={event.googleMapsUrl} target="_blank">
+          <a className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-[#f7f7f2] px-5 text-sm font-black uppercase tracking-[0.14em] text-black transition hover:bg-[#f5f5f5]" href={eventDefaults.googleMapsUrl} target="_blank">
             <Navigation size={16} />
             Google Maps
           </a>
@@ -77,14 +85,14 @@ export default async function LocationPage() {
             Web finca
             <ArrowUpRight size={16} />
           </a>
-          {event.appleMapsUrl ? (
-            <a className="inline-flex h-12 items-center justify-center gap-2 rounded-full border border-white/[0.18] bg-white/[0.06] px-5 text-sm font-black uppercase tracking-[0.14em] text-white transition hover:border-[#f5f5f5]/[0.44]" href={event.appleMapsUrl} target="_blank">
+          {eventDefaults.appleMapsUrl ? (
+            <a className="inline-flex h-12 items-center justify-center gap-2 rounded-full border border-white/[0.18] bg-white/[0.06] px-5 text-sm font-black uppercase tracking-[0.14em] text-white transition hover:border-[#f5f5f5]/[0.44]" href={eventDefaults.appleMapsUrl} target="_blank">
               Apple Maps
               <ArrowUpRight size={16} />
             </a>
           ) : null}
-          {event.wazeUrl ? (
-            <a className="inline-flex h-12 items-center justify-center gap-2 rounded-full border border-white/[0.18] bg-white/[0.06] px-5 text-sm font-black uppercase tracking-[0.14em] text-white transition hover:border-[#f5f5f5]/[0.44]" href={event.wazeUrl} target="_blank">
+          {eventDefaults.wazeUrl ? (
+            <a className="inline-flex h-12 items-center justify-center gap-2 rounded-full border border-white/[0.18] bg-white/[0.06] px-5 text-sm font-black uppercase tracking-[0.14em] text-white transition hover:border-[#f5f5f5]/[0.44]" href={eventDefaults.wazeUrl} target="_blank">
               Waze
               <ArrowUpRight size={16} />
             </a>
