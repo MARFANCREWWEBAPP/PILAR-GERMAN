@@ -1,0 +1,120 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  STAFF
+}
+
+enum AttendanceStatus {
+  CONFIRMED
+  DECLINED
+  PENDING
+}
+
+enum BusPreference {
+  NONE
+  OUTBOUND
+  RETURN
+  BOTH
+}
+
+enum TicketStatus {
+  ACTIVE
+  USED
+  CANCELLED
+}
+
+enum BusType {
+  OUTBOUND
+  RETURN
+}
+
+model UserAdmin {
+  id             Int       @id @default(autoincrement())
+  email          String    @unique
+  passwordHash   String
+  name           String
+  role           Role      @default(ADMIN)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  validatedTickets Ticket[] @relation("TicketValidator")
+}
+
+model Guest {
+  id               Int              @id @default(autoincrement())
+  firstName        String
+  lastName         String
+  phone            String           @unique
+  email            String           @unique
+  invitedBy        String
+  attendanceStatus AttendanceStatus @default(PENDING)
+  partySize        Int              @default(1)
+  busPreference    BusPreference    @default(NONE)
+  busPoint         String?
+  allergies        String?
+  notes            String?
+  privacyAccepted  Boolean
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+  ticket           Ticket?
+}
+
+model Ticket {
+  id         Int         @id @default(autoincrement())
+  guest      Guest       @relation(fields: [guestId], references: [id], onDelete: Cascade)
+  guestId    Int         @unique
+  token      String      @unique
+  qrCodeData String
+  status     TicketStatus @default(ACTIVE)
+  checkedInAt DateTime?
+  checkedInBy Int?
+  validator  UserAdmin?  @relation("TicketValidator", fields: [checkedInBy], references: [id])
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+}
+
+model BusRoute {
+  id           Int      @id @default(autoincrement())
+  type         BusType
+  title        String
+  pointName    String
+  address      String
+  mapsUrl      String
+  departureTime String
+  notes        String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model EventConfig {
+  id             Int      @id @default(autoincrement())
+  eventName      String
+  coupleNames    String
+  date           String
+  startTime      String
+  venueName      String
+  address        String
+  city           String
+  googleMapsUrl  String
+  appleMapsUrl   String?
+  wazeUrl        String?
+  contactInfo    String
+  dressCode      String?
+  allowPartySize Boolean  @default(false)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model PublicContent {
+  id        String   @id
+  content   Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

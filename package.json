@@ -1,0 +1,47 @@
+{
+  "name": "no-sleep-wedding-club",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "prisma generate && next build",
+    "start": "next start",
+    "railway:build": "prisma generate && next build",
+    "railway:start": "prisma migrate deploy && npm run seed && next start -p ${PORT:-3000}",
+    "lint": "next lint",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:deploy": "prisma migrate deploy",
+    "seed": "tsx prisma/seed.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.22.0",
+    "bcryptjs": "^2.4.3",
+    "clsx": "^2.1.1",
+    "jose": "^6.2.3",
+    "jsonwebtoken": "^9.0.2",
+    "lucide-react": "^0.460.0",
+    "next": "^14.2.30",
+    "pdf-lib": "^1.17.1",
+    "qrcode": "^1.5.4",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "xlsx": "^0.18.5",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.7",
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.5.3",
+    "prisma": "^5.22.0",
+    "tailwindcss": "^3.4.17",
+    "tsx": "^4.20.3",
+    "typescript": "^5.7.3"
+  }
+}
