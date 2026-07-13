@@ -87,9 +87,15 @@ export function buildGuestFilterWhere(query: Record<string, string | string[] | 
     if (String(query.validated) === 'true') {
       where.ticket = { is: { status: 'USED' } }
     } else {
-      where.ticket = {
-        OR: [{ is: null }, { is: { status: { not: 'USED' } } }]
-      }
+      where.AND = [
+        ...(Array.isArray(where.AND) ? where.AND : where.AND ? [where.AND] : []),
+        {
+          OR: [
+            { ticket: { is: null } },
+            { ticket: { is: { status: { not: 'USED' } } } }
+          ]
+        }
+      ]
     }
   }
 
