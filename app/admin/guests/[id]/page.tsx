@@ -30,6 +30,19 @@ export default async function GuestDetailPage({ params }: { params: { id: string
 
   if (!guest) notFound()
 
+  const guestDefaults = {
+    firstName: guest.firstName,
+    lastName: guest.lastName,
+    phone: guest.phone,
+    email: guest.email,
+    invitedBy: guest.invitedBy,
+    attendanceStatus: guest.attendanceStatus,
+    busPreference: guest.busPreference,
+    busPoint: guest.busPoint ?? '',
+    allergies: guest.allergies ?? '',
+    notes: guest.notes ?? ''
+  }
+
   async function save(formData: FormData) {
     'use server'
 
@@ -38,19 +51,20 @@ export default async function GuestDetailPage({ params }: { params: { id: string
     }
 
     const attendanceStatus = formData.get('attendanceStatus') as 'CONFIRMED' | 'DECLINED' | 'PENDING' | null
+    const busPreference = formData.get('busPreference') as 'NONE' | 'OUTBOUND' | 'RETURN' | 'BOTH' | null
 
     await prisma.guest.update({
       where: { id },
       data: {
-        firstName: String(formData.get('firstName') || guest.firstName),
-        lastName: String(formData.get('lastName') || guest.lastName),
-        phone: String(formData.get('phone') || guest.phone),
-        email: String(formData.get('email') || guest.email),
-        invitedBy: String(formData.get('invitedBy') || guest.invitedBy),
-        attendanceStatus: attendanceStatus ?? guest.attendanceStatus,
-        busPreference: String(formData.get('busPreference') || guest.busPreference),
+        firstName: String(formData.get('firstName') || guestDefaults.firstName),
+        lastName: String(formData.get('lastName') || guestDefaults.lastName),
+        phone: String(formData.get('phone') || guestDefaults.phone),
+        email: String(formData.get('email') || guestDefaults.email),
+        invitedBy: String(formData.get('invitedBy') || guestDefaults.invitedBy),
+        attendanceStatus: attendanceStatus ?? guestDefaults.attendanceStatus,
+        busPreference: busPreference ?? guestDefaults.busPreference,
         busPoint: String(formData.get('busPoint') || ''),
-        allergies: String(formData.get('allergies') || ''),
+        allergies: guestDefaults.allergies,
         notes: String(formData.get('notes') || '')
       }
     })
@@ -119,17 +133,12 @@ export default async function GuestDetailPage({ params }: { params: { id: string
             </Field>
             <Field label="Bus">
               <select name="busPreference" defaultValue={guest.busPreference} className={selectClass}>
-                <option value="NONE">Sin bus</option>
-                <option value="OUTBOUND">Ida</option>
-                <option value="RETURN">Vuelta</option>
-                <option value="BOTH">Ida y vuelta</option>
+                <option value="NONE">No usa bus</option>
+                <option value="OUTBOUND">Cártama estación → Finca</option>
               </select>
             </Field>
-            <Field label="Punto de bus">
-              <input name="busPoint" defaultValue={guest.busPoint ?? ''} placeholder="Punto de bus" className={inputClass} />
-            </Field>
-            <Field label="Alergias o intolerancias">
-              <input name="allergies" defaultValue={guest.allergies ?? ''} placeholder="Alergias o intolerancias" className={inputClass} />
+            <Field label="Trayecto de bus">
+              <input name="busPoint" defaultValue={guest.busPoint ?? ''} placeholder="Cártama estación → Finca San Isidro" className={inputClass} />
             </Field>
             <Field label="Observaciones">
               <textarea name="notes" defaultValue={guest.notes ?? ''} placeholder="Observaciones" className="min-h-28 w-full rounded-2xl border border-white/[0.14] bg-black/[0.42] px-3 py-3 text-sm text-white outline-none transition placeholder:text-white/[0.32] focus:border-[#f5f5f5]/[0.55] focus:ring-4 focus:ring-[rgba(245,245,245,0.10)]" />
