@@ -5,6 +5,7 @@ import { demoEventConfig, isDemoMode } from '@/lib/demo-data'
 import { AutosaveStatus } from '@/components/admin/AutosaveStatus'
 
 export const dynamic = 'force-dynamic'
+export const revalidate = 0
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (

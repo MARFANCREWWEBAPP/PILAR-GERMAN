@@ -3,6 +3,9 @@ import { Activity, ArrowUpRight, Bus, CalendarDays, ClipboardCheck, Download, La
 import { prisma } from '@/lib/db'
 import { demoGuests, isDemoMode } from '@/lib/demo-data'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 const actionItems = [
   { href: '/admin/menus', label: 'Abrir menús', icon: LayoutGrid },
   { href: '/rsvp', label: 'Registro invitados', icon: ClipboardCheck },
