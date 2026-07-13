@@ -4,6 +4,8 @@ import { prisma } from '@/lib/db'
 import { demoEventConfig, isDemoMode } from '@/lib/demo-data'
 import { AutosaveStatus } from '@/components/admin/AutosaveStatus'
 
+export const dynamic = 'force-dynamic'
+
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <label className="block text-sm font-semibold text-white/[0.62]">
