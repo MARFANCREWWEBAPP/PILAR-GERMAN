@@ -10,7 +10,7 @@ export async function GET(_: NextRequest, { params }: { params: { token: string 
   }
 
   const png = await generateQrPng(ticket.token)
-  return new NextResponse(png, {
+  return new NextResponse(new Uint8Array(png), {
     headers: {
       'Content-Type': 'image/png',
       'Content-Disposition': 'inline; filename="ticket-qr.png"'
