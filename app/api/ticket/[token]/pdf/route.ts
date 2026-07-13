@@ -19,6 +19,12 @@ export async function GET(_: NextRequest, { params }: { params: { token: string 
   }
 
   const event = await getEventConfig()
+  const eventDefaults = {
+    date: event?.date || '06.12.2026',
+    startTime: event?.startTime || '17:30',
+    venueName: event?.venueName || 'FINCA SAN ISIDRO',
+    city: event?.city || 'ARDALES'
+  }
   const qrBuffer = await generateQrPng(ticket.token)
   const fincaBuffer = await readFile(join(process.cwd(), 'public/brand/finca-clean.png'))
 
@@ -78,14 +84,14 @@ export async function GET(_: NextRequest, { params }: { params: { token: string 
 
   page.drawRectangle({ x: 178, y: 456, width: 168, height: 58, color: rgb(1, 1, 1), borderColor: rgb(0.82, 0.79, 0.68), borderWidth: 0.8 })
   page.drawText('DATE / TIME', { x: 190, y: 493, size: 7, font: bold, color: muted })
-  page.drawText(`${event.date}  ${event.startTime}`, { x: 190, y: 473, size: 13, font: bold, color: black })
+  page.drawText(`${eventDefaults.date}  ${eventDefaults.startTime}`, { x: 190, y: 473, size: 13, font: bold, color: black })
   page.drawRectangle({ x: 356, y: 456, width: 150, height: 58, color: rgb(1, 1, 1), borderColor: rgb(0.82, 0.79, 0.68), borderWidth: 0.8 })
   page.drawText('ZONE', { x: 368, y: 493, size: 7, font: bold, color: muted })
   page.drawText('MAIN FIELD', { x: 368, y: 473, size: 13, font: bold, color: black })
 
   page.drawRectangle({ x: 178, y: 376, width: 328, height: 54, color: black })
   page.drawText('LOCATION', { x: 190, y: 410, size: 7, font: bold, color: paleMono })
-  page.drawText(`${event.venueName} / ${event.city}`.toUpperCase(), { x: 190, y: 390, size: 13, font: bold, color: cream })
+  page.drawText(`${eventDefaults.venueName} / ${eventDefaults.city}`.toUpperCase(), { x: 190, y: 390, size: 13, font: bold, color: cream })
 
   page.drawRectangle({ x: 178, y: 150, width: 170, height: 178, color: white, borderColor: rgb(0.12, 0.12, 0.1), borderWidth: 1 })
   page.drawImage(qr, { x: 190, y: 164, width: 146, height: 146 })
